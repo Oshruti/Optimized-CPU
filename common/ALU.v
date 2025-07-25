@@ -1,0 +1,47 @@
+`define AND   4'b0000
+`define OR    4'b0001
+`define ADD   4'b0010
+`define SUB   4'b0110
+`define PassB 4'b0111
+
+
+module ALU(BusW, BusA, BusB, ALUCtrl, Zero);
+
+   // declare input/output ports
+    output  [63:0] BusW; //64 bit output
+    input   [63:0] BusA, BusB;
+    input   [3:0] ALUCtrl;
+    output  Zero; //set to 1 if output is 0
+    
+    reg     [63:0] BusW; //output reg
+
+   // switching over all alu control cases
+    always @(ALUCtrl or BusA or BusB) begin
+        case(ALUCtrl)
+            `AND: begin // BusA AND BusB
+                BusW = BusA & BusB ;
+            end
+	 
+            `OR: begin // BusA OR BusB
+	       BusW = BusA | BusB;
+	    end
+
+	  `SUB: begin // BusA - BusB
+	     BusW = BusA - BusB;
+	  end
+
+	  `ADD: begin // BusA + BusB
+	     BusW =  BusA + BusB;
+	  end
+
+	  `PassB: begin // BusB
+	     BusW = BusB[63:0];
+	  end
+	  
+        endcase
+    end
+
+   assign Zero = (BusW == 64'b0); //set to 1 if output is 0
+   
+   
+endmodule
