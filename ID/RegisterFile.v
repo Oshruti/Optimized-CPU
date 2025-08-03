@@ -16,13 +16,13 @@ reg [63:0] registers [31:0]; //internal register file
 //   registers[31] = 64'b0; //set register 31 to be 0
 //end
 
-assign #2  BusA = (RA == 5'b11111) ? 64'b0 : registers[RA]; //assigning BusA with contents in RegisterA after 2 sec delay
-assign #2  BusB = (RB == 5'b11111) ? 64'b0 : registers[RB]; //assigning BusB with contents in RegisterB after 2 sec delay
+assign BusA = (RA == 5'b11111) ? 64'b0 : registers[RA]; //assigning BusA with contents in RegisterA after 2 sec delay
+assign BusB = (RB == 5'b11111) ? 64'b0 : registers[RB]; //assigning BusB with contents in RegisterB after 2 sec delay
 
 
 always@(negedge Clk) begin //writing to a register on falling clock edge
 	if (RegWr && !(RW == 5'b11111)) //checking if Write is enabled (do not allow writing to register 31)
-	  registers[RW] <= #3 BusW; //writing BusW contents to register
+	  registers[RW] <= BusW; //writing BusW contents to register
 	
 end
 
